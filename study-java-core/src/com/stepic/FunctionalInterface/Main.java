@@ -8,9 +8,11 @@ public class Main {
     public static void main(String[] args) {
         Predicate<Object> condition = Objects::isNull;
         Function<Object, Integer> ifTrue = obj -> 0;
-        Function<CharSequence, Integer> ifFalse = CharSequence::length;
+        //Function<CharSequence, Integer> ifFalse = CharSequence::length;
+        Function<String, Integer> ifFalse = String::length;
         Function<String, Integer> safeStringLength = ternaryOperator(condition, ifTrue, ifFalse);
         System.out.println(safeStringLength.apply("rrddr"));
+        String str = "ddd";
     }
 
     public static <T, U> Function<T, U> ternaryOperator(
