@@ -1,10 +1,7 @@
 package com.ekkel.oi;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 
@@ -28,13 +25,13 @@ abstract class Shape implements Serializable {
     }
 
     public String toString() {
-        return getClass() + "color:" + getColor() + "; xPos:" + xPos + "; yPos:" + yPos + "; dim:" + dimension + ";\n";
+        return getClass() + " color:" + getColor() + "; xPos:" + xPos + "; yPos:" + yPos + "; dim:" + dimension + ";\n";
     }
 
     public static Shape randomFactory() {
-        int xVal = rand.nextlnt(100);
-        int yVal = rand.nextlnt(100);
-        int dim = rand.nextlnt(100);
+        int xVal = rand.nextInt(100);
+        int yVal = rand.nextInt(100);
+        int dim = rand.nextInt(100);
         switch (counter++ % 3) {
             default:
             case 0:
@@ -73,18 +70,19 @@ class Square extends Shape {
         color = newColor;
     }
     public int getColor(){
-        return color; }
+        return color;
     }
 }
+
 class Line extends Shape {
     private static int color = RED;
 
-    public static void serializeStaticState(ObjectOutputStream os) throws IOException {
-        os.writelnt(color);
+    public static void serializeStaticParam(ObjectOutputStream os) throws IOException {
+        os.writeInt(color);
     }
 
-    public static void deserializeStaticState(ObjectInputStream os) throws IOException {
-        color = os.readlnt();
+    public static void deserializeStaticParam(ObjectInputStream os) throws IOException {
+        color = os.readInt();
     }
 
     public Line(int xVal, int yVal, int dim) {
@@ -99,5 +97,16 @@ class Line extends Shape {
         return color;
     }
 }
-//public class StoreCADState {
-//}
+public class StoreCADState {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        List<Shape> shapes = new ArrayList<>();
+        for (int i=0; i<10;i++)
+            shapes.add(Shape.randomFactory());
+        for (int i=0; i<10;i++)
+            shapes.get(i).setColor(Shape.GREEN);
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("CAD.dat"));
+        Line.serializeStaticParam(oos);
+        oos.writeObject(shapes);
+        System.out.println(shapes);
+    }
+}
