@@ -6,6 +6,7 @@ import com.klyshov.springbootdemo.utils.Ajax;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,7 @@ public class DataController extends ExceptionHandlerController {
     @RequestMapping(value = "/persist", method = RequestMethod.POST)
     public @ResponseBody
     Map<String, Object> persist(@RequestParam("data") String data) throws RestException {
+        System.out.println("/persist");
         try {
             if (data == null || data.equals("")) {
                 return Ajax.emptyResponse();
@@ -41,6 +43,7 @@ public class DataController extends ExceptionHandlerController {
     @RequestMapping(value = "/getRandomData", method = RequestMethod.GET)
     public @ResponseBody
     Map<String, Object> getRandomData() throws RestException {
+        System.out.println("/getRandomData");
         try {
             Set<String> result = dataService.getRandomData();
             return Ajax.successResponse(result);
@@ -49,4 +52,9 @@ public class DataController extends ExceptionHandlerController {
         }
     }
 
+
+    @Scheduled(fixedRate = 5000)
+    public void reportCurrentTime() {
+        System.out.println("Scheduled task");
+    }
 }
