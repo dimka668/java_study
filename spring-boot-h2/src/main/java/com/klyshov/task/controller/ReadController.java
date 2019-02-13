@@ -7,11 +7,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import java.io.FileNotFoundException;
+
 /**
- * Created by 16688641 on 12.02.2019.
+ * Created by 16688641 on 13.02.2019.
  */
 @Controller
-public class CreateController {
+public class ReadController {
 
     @Autowired
     private ApplicationContext context;
@@ -19,8 +21,9 @@ public class CreateController {
     @Autowired
     private TaskService taskService;
 
-    //@Scheduled(fixedRate = 5000)
-    public void createTask() {
-        taskService.send(new Task("user", "command", 2));
+    @Scheduled(fixedRate = 5000)
+    public void read() throws FileNotFoundException {
+        Task task = taskService.read();
+        System.out.println(task);
     }
 }

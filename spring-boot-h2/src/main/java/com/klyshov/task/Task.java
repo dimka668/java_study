@@ -56,6 +56,11 @@ public class Task {
         this.priority = priority;
     }
 
+    @Override
+    public String toString() {
+        return "user: "+user+"; command:"+command;
+    }
+
     public void marshalToFile(String fileName) {
         try {
             //JAXBContext jc = JAXBContext.newInstance(this.getClass().getPackage().getName());
@@ -76,4 +81,10 @@ public class Task {
             return new Task();
         }
     }
+    public static Task taskGenegator(){
+
+
+
+    }
+
 }
