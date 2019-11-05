@@ -31,8 +31,10 @@ abstract class Accumulator {
     public abstract long read();
     private class Modifier implements Runnable {
         public void run() {
+            //System.out.println(this + " test запущен. barrier.getNumberWaiting="+barrier.getNumberWaiting());
             for (long i = 0; i < cycles; i++)
                 accumulate();
+            //System.out.println(this + " test завершен. barrier.getNumberWaiting="+barrier.getNumberWaiting());
             try {
                 barrier.await();
             } catch (Exception e) {
@@ -43,8 +45,10 @@ abstract class Accumulator {
     private class Reader implements Runnable {
         private volatile long value;
         public void run() {
+            //System.out.println(this + " test запущен. barrier.getNumberWaiting="+barrier.getNumberWaiting());
             for (long i = 0; i < cycles; i++)
                 value = read();
+            //System.out.println(this + " test завершен. barrier.getNumberWaiting="+barrier.getNumberWaiting());
             try {
                 barrier.await();
             } catch (Exception e) {
@@ -56,16 +60,19 @@ abstract class Accumulator {
     public void timedTest() {
         long start = System.nanoTime();
         for (int i = 0; i < N; i++) {
+//            System.out.println(this + " test No." + i + " start Modifiers");
             exec.execute(new Modifier());
+//            System.out.println(this + " test No." + i + " start Readers");
             exec.execute(new Reader());
-            try {
-                barrier.await();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            duration = System.nanoTime() - start;
-            System.out.printf("%-13s: %13d\n", id, duration);
         }
+        try {
+            barrier.await();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        duration = System.nanoTime() - start;
+        System.out.printf("%-13s: %13d\n", id, duration);
+//        System.out.println(this + " test stop");
     }
     public static void report(Accumulator accl, Accumulator acc2){
         System.out.printf("%-22s: %.2f\n", accl.id + "f" + acc2.id, (double)accl.duration/(double)acc2.duration);
@@ -76,7 +83,10 @@ class BaseLine extends Accumulator {
     { id = "BaseLine"; }
     public void accumulate() {
         value += preLoaded[index++];
-        if (index >= SIZE) index = 0;
+        if (index >= SIZE){
+            //System.out.println(index + " set to 0");
+            index = 0;
+        }
     }
     public long read() { return value; }
 }
@@ -126,7 +136,8 @@ class AtomicTest extends Accumulator {
     public void accumulate() {
         int i = index.getAndIncrement();
         value.getAndAdd(preLoaded[i]);
-        if (++i >= SIZE) index.set(0);
+        if (++i >= SIZE)
+            index.set(0);
     }
     public long read() { return value.get(); }
 }
@@ -142,13 +153,13 @@ public class SynchronizationComparisons {
         baseLine.timedTest();
         synch.timedTest();
         lock.timedTest();
-        atomic.timedTest();
-        Accumulator.report(synch, baseLine);
-        Accumulator.report(lock, baseLine);
-        Accumulator.report(atomic, baseLine);
-        Accumulator.report(synch, lock);
-        Accumulator.report(synch, atomic);
-        Accumulator.report(lock, atomic);
+        //atomic.timedTest();
+        //Accumulator.report(synch, baseLine);
+        //Accumulator.report(lock, baseLine);
+        //Accumulator.report(atomic, baseLine);
+        //Accumulator.report(synch, lock);
+        //Accumulator.report(synch, atomic);
+        //Accumulator.report(lock, atomic);
     }
     public static void main(String[] args) {
         int iterations = 5; // По умолчанию
@@ -156,11 +167,13 @@ public class SynchronizationComparisons {
             iterations = new Integer(args[0]);
         // При первом проходе заполняется пул потоков:
         System.out.println("Warmup");
+        System.out.println("First Baseline");
         baseLine.timedTest();
         // Теперь исходный тест не включает затраты
         // на первый запуск потоков.
         // Создание множественных элементов данных:
         for(int i = 0; i < iterations; i++) {
+            System.out.println("Run test No."+i);
             test();
             Accumulator.cycles *= 2;
         }

@@ -1,7 +1,15 @@
 package com.ekkel.enumerated.menu;
 
-/**
- * Created by 16688641 on 12.03.2019.
- */
-public class Course {
+import com.ekkel.enumerated.Enums;
+
+public enum Course {
+    APPETIZER(Food.Appetizer.class),
+    MAINCOURSE(Food.MainCourse.class),
+    DESSERT(Food.Dessert.class),
+    COFFEE(Food.Coffee.class); private Food[] values;
+    private Course(Class<? extends Food> kind) {
+        values = kind.getEnumConstants();
+    }
+    public Food randomSelection() { return Enums.random(values);
+    }
 }

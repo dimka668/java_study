@@ -3,9 +3,12 @@
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>Список пользователей</title>
+    <title>${application_name} - Список пользователей</title>
 </head>
 <body>
+
+<h1>${application_name} - Список пользователей</h1>
+
 <table border="2">
     <tr>
         <td>ID</td>
