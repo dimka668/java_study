@@ -32,23 +32,22 @@ public class UserSimpleServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("\nreq="+req.toString()+"\nresp="+resp.toString());
-        log.info("req.getContextPath()" + req.getContextPath());
-        log.info("req.getPathInfo()" + req.getPathInfo());
+//        log.info("\nreq="+req.toString()+"\nresp="+resp.toString());
+        log.info(">>>>>>>>> GET: req.getContextPath()" + req.getContextPath());
+        log.info(">>>>>>>>> GET: req.getPathInfo()" + req.getPathInfo());
         List<User> users = service.findAllUsers();
         req.setAttribute("users", users);
+        req.setAttribute("application_name", req.getServletContext().getAttribute("application.name"));
+        log.info(">>>>>>>>> GET: Read context attribute application_name="+req.getServletContext().getAttribute("application.name"));
         RequestDispatcher dispatcher = req.getRequestDispatcher("/showUsers.jsp");
         dispatcher.forward(req, resp);
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        log.info("\nreq="+req.toString()+"\nresp="+resp.toString());
-
-        log.info("req.getContextPath()" + req.getContextPath());
-        log.info("req.getPathInfo()" + req.getPathInfo());
+        log.info(">>>>>>>>> POST: req.getContextPath()" + req.getContextPath());
+        log.info(">>>>>>>>> POST: req.getPathInfo()" + req.getPathInfo());
 
         String name = req.getParameter("name");
         int age = Integer.parseInt(req.getParameter("age"));
@@ -59,7 +58,6 @@ public class UserSimpleServlet extends HttpServlet {
 
     @Override
     protected void	doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("\nreq="+req.toString()+"\nresp="+resp.toString());
         int id = Integer.parseInt(req.getParameter("id"));
         User user = service.findUser(id);
         user.setName(req.getParameter("name"));
@@ -70,7 +68,6 @@ public class UserSimpleServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        log.info("\nreq="+req.toString()+"\nresp="+resp.toString());
         int id = Integer.parseInt(req.getParameter("id"));
         service.deleteUser(service.findUser(id));
         resp.sendRedirect(req.getContextPath()+"/users");

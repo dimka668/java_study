@@ -5,20 +5,36 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
 
-  <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-  </welcome-file-list>
+  <!--
+    <welcome-file-list>
+      <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <servlet>
+      <servlet-name>UserSimpleServlet</servlet-name>
+      <servlet-class>com.klyshov.hibernate.servlets.UserSimpleServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+      <servlet-name>UserSimpleServlet</servlet-name>
+      <url-pattern>/uss</url-pattern>
+    </servlet-mapping>
+  -->
 
   <servlet>
-    <servlet-name>UserSimpleServlet</servlet-name>
-    <servlet-class>com.klyshov.hibernate.servlets.UserSimpleServlet</servlet-class>
+    <servlet-name>HelloWeb</servlet-name>
+    <servlet-class>
+      org.springframework.web.servlet.DispatcherServlet
+    </servlet-class>
+    <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>UserSimpleServlet</servlet-name>
-    <url-pattern>/</url-pattern>
+    <servlet-name>HelloWeb</servlet-name>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
 
+<!--
   <listener>
     <listener-class>com.klyshov.listener.AppContextListener</listener-class>
   </listener>
@@ -32,5 +48,5 @@
     <filter-name>hiddenHttpMethodFilter</filter-name>
     <servlet-name>UserSimpleServlet</servlet-name>
   </filter-mapping>
-
+-->
 </web-app>

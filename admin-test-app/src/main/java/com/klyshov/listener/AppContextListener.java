@@ -1,8 +1,5 @@
 package com.klyshov.listener;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

@@ -81,8 +81,9 @@ public class Task {
             return new Task();
         }
     }
-    public static Task taskGenegator(){
-
+    private class taskGenegator{
+        public int counter;
+        new
 
 
     }
