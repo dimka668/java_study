@@ -41,7 +41,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>4.0.5.RELEASE</version>
+      <version>5.3.18</version>
       <type>jar</type>
     </dependency>
     <!-- Add Spring Security -->
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.2.1.RELEASE</version>
+      <version>5.3.18</version>
     </dependency>
   </dependencies>
 
